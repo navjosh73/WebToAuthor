@@ -42,6 +42,20 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
+app.MapGet("/authorise", async (string? token)=>
+{
+    // Simple token validation (hardcoded for demonstration)
+    
+    if (string.IsNullOrWhiteSpace(token) || token != "valid-token-123")
+    {
+        app.Logger.LogWarning("Authorisation failed for token: {Token}", token);
+        return Results.Unauthorized();
+    }
+
+    app.Logger.LogInformation("Authorisation succeeded for token: {Token}", token);
+    return Results.Ok("Authorisation successful");
+});
+
 app.MapGet("/weatherforecast", () =>
 {
     app.Logger.LogInformation("In weatherforecast WebToAuthorise");

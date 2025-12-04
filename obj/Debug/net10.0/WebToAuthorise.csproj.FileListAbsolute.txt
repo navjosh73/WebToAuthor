@@ -31,3 +31,4 @@ C:\learn AWS\Dockerised API\WebToAuthorise\obj\Debug\net10.0\refint\WebToAuthori
 C:\learn AWS\Dockerised API\WebToAuthorise\obj\Debug\net10.0\WebToAuthorise.pdb
 C:\learn AWS\Dockerised API\WebToAuthorise\obj\Debug\net10.0\WebToAuthorise.genruntimeconfig.cache
 C:\learn AWS\Dockerised API\WebToAuthorise\obj\Debug\net10.0\ref\WebToAuthorise.dll
+C:\learn AWS\Dockerised API\WebToAuthorise\obj\Debug\net10.0\WebToAuthorise.sourcelink.json
