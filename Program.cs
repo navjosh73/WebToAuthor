@@ -7,7 +7,7 @@ builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 // Ensure the app binds to known ports in case environment or tooling doesn't set URLs.
-builder.WebHost.UseUrls("https://localhost:5001", "http://localhost:5000");
+builder.WebHost.UseUrls("http://localhost:5000");
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -25,6 +25,23 @@ builder.Services.AddHttpLogging(options =>
 });
 
 var app = builder.Build();
+
+app.Use(async (ctx, next) =>
+{
+    Console.WriteLine($"REQUEST: {ctx.Request.Method} {ctx.Request.Path}");
+    try
+    {
+        await next();
+        Console.WriteLine($"RESPONSE: {ctx.Response.StatusCode} for {ctx.Request.Path}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"EXCEPTION: {ex.GetType().Name} - {ex.Message}");
+        throw;
+    }
+});
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -53,7 +70,7 @@ app.MapGet("/authorise", async (string? token)=>
     }
 
     app.Logger.LogInformation("Authorisation succeeded for token: {Token}", token);
-    return Results.Ok("Authorisation successful");
+    return Results.Text("Authorisation successful");
 });
 
 app.MapGet("/weatherforecast", () =>
@@ -71,7 +88,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-app.Run();
+app.Run("http://0.0.0.0:8080");
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

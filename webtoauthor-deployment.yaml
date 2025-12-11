@@ -1,0 +1,39 @@
+# 1. Deployment: Defines the webtoauthor container configuration
+apiVersion: apps/v1
+kind: Deployment
+metadata:               # <<< REQUIRED METADATA START
+  name: webtoauthor-deployment
+  labels:
+    app: webtoauthor
+spec:                   # <<< REQUIRED SPEC START
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webtoauthor
+  template:
+    metadata:
+      labels:
+        app: webtoauthor
+    spec:
+      containers:
+      - name: webtoauthor-container
+        image: webtoauthor:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+---
+# 2. Service: Exposes the webtoauthor application
+apiVersion: v1
+kind: Service
+metadata:               # <<< REQUIRED METADATA START
+  name: webtoauthor-service
+  labels:
+    app: webtoauthor
+spec:
+  type: NodePort
+  selector:
+    app: webtoauthor
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
